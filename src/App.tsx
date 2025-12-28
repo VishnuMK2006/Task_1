@@ -11,12 +11,14 @@ function App() {
     { id: 't1', name: 'T-Shirt 1', path: '/models/t1.glb' },
     { id: 't2', name: 'T-Shirt 2', path: '/models/t2.glb' },
     { id: 't3', name: 'T-Shirt 3', path: '/models/t3.glb' },
+    { id: 't4', name: 'T-Shirt 4', path: '/models/t4.glb' },
   ];
 
   const pants = [
     { id: 'p1', name: 'Pant 1', path: '/models/p1.glb' },
     { id: 'p2', name: 'Pant 2', path: '/models/p2.glb' },
     { id: 'p3', name: 'Pant 3', path: '/models/p3.glb' },
+    { id: 'p4', name: 'Pant 4', path: '/models/p4.glb' },
   ];
 
   return (
