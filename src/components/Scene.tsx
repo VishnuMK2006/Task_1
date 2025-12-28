@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useRef } from 'react'
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, useGLTF } from "@react-three/drei";
 import * as THREE from 'three'
@@ -8,26 +8,32 @@ function YBot() {
   return <primitive object={scene} />;
 }
 
-function ClothingItem({ modelPath, isSelected, category }) {
+interface ClothingItemProps {
+  modelPath: string;
+  isSelected: boolean;
+  category: 'shirt' | 'pant';
+}
+
+function ClothingItem({ modelPath, isSelected, category }: ClothingItemProps) {
   const { scene } = useGLTF(modelPath);
-  const ref = useRef();
+  const ref = useRef<THREE.Group>(null);
   
   // Clone scene to avoid conflicts if multiple items use the same model
-  const clonedScene = useRef();
-  if (!clonedScene.current) clonedScene.current = scene.clone();
+  const clonedScene = useRef<THREE.Group>(null!);
+  if (!clonedScene.current) clonedScene.current = scene.clone() as THREE.Group;
 
   // Coordinates based on user adjustments
-  const pantCoords = [0, -0.095, -0.01];
-  const shirtCoords = [0, -0.08, 0.02];
+  const pantCoords: [number, number, number] = [0, -0.095, -0.01];
+  const shirtCoords: [number, number, number] = [0, -0.08, 0.02];
   
   const targetCoords = category === 'pant' ? pantCoords : shirtCoords;
   const sideX = category === 'pant' ? -1.5 : 1.5;
 
-  const pantScale = [1.09, 1.06, 1.05];
-  const shirtScale = [1.05, 1.05, 1.05];
+  const pantScale: [number, number, number] = [1.09, 1.06, 1.05];
+  const shirtScale: [number, number, number] = [1.05, 1.05, 1.05];
   const targetScale = category === 'pant' ? pantScale : shirtScale;
 
-  useFrame((state, delta) => {
+  useFrame((_state, delta) => {
     if (ref.current) {
       if (isSelected) {
         // Move to fitted position
@@ -53,7 +59,12 @@ function ClothingItem({ modelPath, isSelected, category }) {
   ) : null;
 }
 
-export default function Scene({ selectedShirt, selectedPant }) {
+interface SceneProps {
+  selectedShirt: string | null;
+  selectedPant: string | null;
+}
+
+export default function Scene({ selectedShirt, selectedPant }: SceneProps) {
   return (
     <Canvas camera={{ position: [0, 2, 5] }}>
       <ambientLight intensity={0.8} />
@@ -84,3 +95,4 @@ export default function Scene({ selectedShirt, selectedPant }) {
     </Canvas>
   );
 }
+
